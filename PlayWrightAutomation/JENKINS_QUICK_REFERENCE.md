@@ -53,7 +53,7 @@ Scopes: repo, admin:repo_hook
 Manage Jenkins → System → GitHub → Add GitHub Server
 - Name: GitHub
 - API URL: https://api.github.com
-- Credentials: GitHub Personal Access Token
+- Credentials: GitHub Personal Access Token ---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
 ```
 
 ### 3. Add GitHub Webhook
