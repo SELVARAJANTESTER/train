@@ -8,7 +8,7 @@ pipeline {
 
     environment {
         NODE_PATH = 'C:\\Program Files\\nodejs'
-        GIT_REPO = 'https://github.com/YOUR_GITHUB_USERNAME/PlayWrightAutomation.git'
+        GIT_REPO = 'https://github.com/SELVARAJANTESTER/train/PlayWrightAutomation.git'
         PROJECT_DIR = 'PlayWrightAutomation'
     }
 
