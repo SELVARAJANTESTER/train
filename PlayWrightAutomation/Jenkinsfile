@@ -9,7 +9,7 @@ pipeline {
     environment {
         NODE_PATH = 'C:\\Program Files\\nodejs'
         GIT_REPO = 'https://github.com/SELVARAJANTESTER/train.git'
-        PROJECT_DIR = '.'
+        PROJECT_DIR = 'PlayWrightAutomation'
     }
 
     stages {
