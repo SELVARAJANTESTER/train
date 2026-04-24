@@ -1,0 +1,80 @@
+name: Playwright Tests CI/CD
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+  schedule:
+    - cron: '0 2 * * *'  # Run daily at 2 AM UTC
+
+jobs:
+  test:
+    timeout-minutes: 60
+    runs-on: windows-latest
+    strategy:
+      matrix:
+        node-version: [18.x, 20.x]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: |
+          cd PlayWrightAutomation
+          npm install
+
+      - name: Install Playwright browsers
+        run: |
+          cd PlayWrightAutomation
+          npx playwright install
+
+      - name: Run Regression Tests
+        run: |
+          cd PlayWrightAutomation
+          npm run regression
+        continue-on-error: true
+
+      - name: Generate Allure Report
+        if: always()
+        run: |
+          cd PlayWrightAutomation
+          npx allure generate allure-results -c -o allure-report
+        continue-on-error: true
+
+      - name: Upload Playwright Report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report-${{ matrix.node-version }}
+          path: PlayWrightAutomation/playwright-report/
+          retention-days: 30
+
+      - name: Upload Test Results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results-${{ matrix.node-version }}
+          path: PlayWrightAutomation/test-results/
+          retention-days: 30
+
+      - name: Upload Allure Report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: allure-report-${{ matrix.node-version }}
+          path: PlayWrightAutomation/allure-report/
+          retention-days: 30
+
+      - name: Publish Test Results
+        if: always()
+        uses: EnricoMi/publish-unit-test-result-action@v2
+        with:
+          files: PlayWrightAutomation/test-results/**/*.json

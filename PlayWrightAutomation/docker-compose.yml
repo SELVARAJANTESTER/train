@@ -1,0 +1,60 @@
+version: '3.8'
+
+services:
+  jenkins:
+    image: jenkins/jenkins:lts
+    container_name: playwright-jenkins
+    ports:
+      - "8080:8080"
+      - "50000:50000"
+    environment:
+      - JAVA_OPTS=-Djenkins.install.runSetupWizard=false
+      - CASC_JENKINS_CONFIG=/var/jenkins_home/casc_configs
+    volumes:
+      - jenkins_home:/var/jenkins_home
+      - jenkins_casc:/var/jenkins_home/casc_configs
+      - /var/run/docker.sock:/var/run/docker.sock
+    restart: unless-stopped
+    networks:
+      - jenkins-network
+
+  # Optional: Allure container for report hosting
+  allure:
+    image: frankescobar/allure-docker-service:latest
+    container_name: allure-server
+    ports:
+      - "4040:4040"  # Allure UI
+      - "8585:8585"  # API
+    environment:
+      - CHECK_RESULTS_EVERY_SECONDS=5
+      - KEEP_HISTORY=1
+    volumes:
+      - allure_results:/app/allure-results
+      - allure_reports:/app/allure-reports
+    networks:
+      - jenkins-network
+
+  # Optional: PostgreSQL for Jenkins data (for scalability)
+  postgres:
+    image: postgres:15-alpine
+    container_name: jenkins-db
+    environment:
+      - POSTGRES_USER=jenkins
+      - POSTGRES_PASSWORD=jenkins_password
+      - POSTGRES_DB=jenkins
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - jenkins-network
+    restart: unless-stopped
+
+volumes:
+  jenkins_home:
+  jenkins_casc:
+  allure_results:
+  allure_reports:
+  postgres_data:
+
+networks:
+  jenkins-network:
+    driver: bridge
