@@ -1,4 +1,14 @@
 {
+  "scripts": {
+    "test": "npm --prefix PlayWrightAutomation test",
+    "regression": "npm --prefix PlayWrightAutomation run regression",
+    "webTests": "npm --prefix PlayWrightAutomation run webTests",
+    "web": "npm --prefix PlayWrightAutomation run web",
+    "APITests": "npm --prefix PlayWrightAutomation run APITests",
+    "api": "npm --prefix PlayWrightAutomation run api",
+    "install-playwright": "npm --prefix PlayWrightAutomation run install-playwright",
+    "safari": "npm --prefix PlayWrightAutomation run safari"
+  },
   "devDependencies": {
     "@cucumber/cucumber": "^12.7.0",
     "@playwright/test": "^1.58.2"

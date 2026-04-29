@@ -39,6 +39,17 @@ pipeline {
             }
         }
 
+        stage('Install Playwright Browsers') {
+            steps {
+                script {
+                    dir("${env.PROJECT_DIR}") {
+                        echo "Installing Playwright browsers..."
+                        bat 'npx playwright install'
+                    }
+                }
+            }
+        }
+
         stage('Run Tests') {
             steps {
                 script {

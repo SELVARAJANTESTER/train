@@ -1,17 +1,17 @@
 const {test, expect, request} = require('@playwright/test');
 const {APiUtils} = require('../utils/APiUtils');
-const loginPayLoad = {userEmail:"anshika@gmail.com",userPassword:"Iamking@000"};
-const orderPayLoad = {orders:[{country:"Cuba",productOrderedId:"6262e95ae26b7e1a10e89bf0"}]};
+const loginPayLoad = {userEmail:"celvarajan.m@gmail.com",userPassword:"cQRjfsyErt4aA@z"};
+const orderPayLoad = {orders:[{country:"India"}]};
 
 
 let response;
-test.beforeAll( async()=>
-{
+test.beforeAll( async() => {
    const apiContext = await request.newContext();
-   const apiUtils = new APiUtils(apiContext,loginPayLoad);
-   response =  await apiUtils.createOrder(orderPayLoad);
+   const apiUtils = new APiUtils(apiContext, loginPayLoad);
+   orderPayLoad.orders[0].productOrderedId = await apiUtils.getFirstProductId();
+   response = await apiUtils.createOrder(orderPayLoad);
 
-})
+});
 
 
 //create order is success

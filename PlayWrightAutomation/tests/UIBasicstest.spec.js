@@ -16,16 +16,24 @@
       page.on('response',response=> console.log(response.url(), response.status()));
       await page.goto("https://rahulshettyacademy.com/loginpagePractise/");
       console.log(await page.title());
-      //css 
-     await userName.fill("rahulshetty");
+      // invalid login check
+     await userName.fill("rahulshettyacademy");
      await page.locator("[type='password']").fill("learning");
      await signIn.click();
     console.log(await page.locator("[style*='block']").textContent());
-    await expect(page.locator("[style*='block']")).toContainText('Incorrect');
-    //type - fill
+    await expect(page.locator("[style*='block']")).toContainText(/Incorrect|Old password/);
+    // valid login
     await userName.fill("");
     await userName.fill("rahulshettyacademy");
+    await page.locator("[type='password']").fill("Learning@830$3mK2");
+    await page.locator('input[value="user"]').check();
+    await page.waitForSelector('#myModal', { state: 'visible', timeout: 5000 });
+    await page.locator('#okayBtn').click();
+    await page.waitForSelector('#myModal', { state: 'hidden', timeout: 5000 });
+    await page.locator("#terms").check();
     await signIn.click();
+    await page.waitForLoadState('networkidle');
+    await expect(cardTitles.first()).toBeVisible({ timeout: 60000 });
     console.log(await cardTitles.first().textContent());
    console.log(await cardTitles.nth(1).textContent());
    const allTitles = await cardTitles.allTextContents();
@@ -64,7 +72,7 @@
     await page.goto("https://rahulshettyacademy.com/loginpagePractise/");
     const documentLink = page.locator("[href*='documents-request']");
 
-    const [newPage]=Promise.all(
+    const [newPage] = await Promise.all(
    [
       context.waitForEvent('page'),//listen for any new page pending,rejected,fulfilled
       documentLink.click(),

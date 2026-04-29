@@ -4,10 +4,15 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "test": "npm run regression",
     "regression": "npx playwright test",
     "webTests": "npx playwright test --grep @Web",
+    "web": "npm run webTests",
     "APITests": "npx playwright test --grep @API",
-    "SafariNewConfig": "npx playwright test --config playwright.config1.js --project=safari"
+    "api": "npm run APITests",
+    "install-playwright": "npx playwright install",
+    "SafariNewConfig": "npx playwright test --config playwright.config1.js --project=safari",
+    "safari": "npm run SafariNewConfig"
   },
   "keywords": [],
   "author": "",

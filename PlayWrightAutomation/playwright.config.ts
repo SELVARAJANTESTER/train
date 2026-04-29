@@ -1,7 +1,7 @@
-//@ts-check
-//import { devices }  from '@playwright/test';
+import type { PlaywrightTestConfig } from '@playwright/test';
+//import { devices } from '@playwright/test';
 
-const config = {
+const config: PlaywrightTestConfig = {
   testDir: './tests',
   retries :0,
   
@@ -23,8 +23,7 @@ const config = {
     
     
     
-  },
-
+  }
 
 };
 
