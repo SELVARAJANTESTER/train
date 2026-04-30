@@ -41,4 +41,4 @@ async Checkout()
 }
 
 }
-module.exports = {CartPage};
+export default CartPage;

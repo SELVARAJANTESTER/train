@@ -53,5 +53,5 @@ async SubmitAndGetOrderId()
  return await this.orderId.textContent();
 }
 }
-module.exports = {OrdersReviewPage};
+export default OrdersReviewPage;
    

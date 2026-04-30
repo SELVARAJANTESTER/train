@@ -31,4 +31,4 @@ async validLogin(username:string,password:string)
 }
 
 }
-module.exports = {LoginPage};
+export default LoginPage;
